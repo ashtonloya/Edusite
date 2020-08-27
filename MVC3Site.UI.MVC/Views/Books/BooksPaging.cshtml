@@ -1,0 +1,74 @@
+﻿@*@model IEnumerable<MVC3Site.DATA.EF.Book>*@
+@model PagedList.IPagedList<MVC3Site.DATA.EF.Book>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Books - MVCPaged List - (server side paging)";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="loginContainer" style="margin-bottom:2em;">
+    <div class="row">
+        <div class="col-md-6" style="padding-top:2em;">
+            <strong>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)</strong> of
+            <strong>@Model.PageCount</strong>
+        </div>
+        <div class="col-md-6 text-right">
+            @Html.PagedListPager(Model, page => Url.Action("BooksPaging", new { page }))
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Add New Book", "Create", null, new { @class = "main-button" })
+</p>
+<table class="table">
+    <tr>
+        @*For MVCPaging - we need to add the FirstOrDefault() to the model call to account for Null Values*@
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().BookImage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().BookTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().PublishDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().BookStatus.BookStatusName)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("Details",new {id=item.BookID })">
+                    <img src="~/Content/imgstore/books/t_@item.BookImage" alt="@item.BookTitle" />
+                </a>
+            </td>
+            <td>
+                <a href="@Url.Action("Details",new {id=item.BookID })">
+                    @Html.DisplayFor(modelItem => item.BookTitle)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookStatus.BookStatusName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.BookID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.BookID })
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,85 @@
+﻿@model IEnumerable<MVC3Site.DATA.EF.Book>
+
+@{
+    ViewBag.Title = "Books";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row" style="margin-bottom:2em;">
+    <div class="col-md-6">
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("Add New Book", "Create", null, new { @class = "main-button" })
+        }
+    </div>
+    <div class="col-md-6 text-right">
+        @Html.ActionLink("View Server Side Paging", "BooksPaging", null, new { @class = "main-button" })
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublishDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookStatus.BookStatusName)
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details",new {id=item.BookID })">
+                        <img src="~/Content/imgstore/books/t_@item.BookImage" alt="@item.BookTitle" />
+                    </a>
+                </td>
+                <td>
+                    <a href="@Url.Action("Details",new {id=item.BookID })">
+                        @Html.DisplayFor(modelItem => item.BookTitle)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookStatus.BookStatusName)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.BookID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.BookID })
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}

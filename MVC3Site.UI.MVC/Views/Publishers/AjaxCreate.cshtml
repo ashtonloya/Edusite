@@ -1,0 +1,39 @@
+﻿@model MVC3Site.DATA.EF.Publisher
+
+
+@using (Html.BeginForm("","",FormMethod.Post,new {id="PublisherCreateForm" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.PublisherName, new { htmlAttributes = new { @class = "form-control",
+                   placeholder="Publisher Name"} })
+                @Html.ValidationMessageFor(model => model.PublisherName, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control",
+                    placeholder="City"} })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control",
+                    placeholder="State"} })
+                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+            </div>
+            <!--Removed the IsActive checkbox - Default in the create post in the controller.-->
+            <div class="col-md-1">
+                <input type="submit" value="Add" class="main-button" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

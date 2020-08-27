@@ -1,0 +1,94 @@
+﻿@model MVC3Site.DATA.EF.Publisher
+
+<!--See bottom of this form for Processing logic to submit the edit-->
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "PublisherEditForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.HiddenFor(model => model.PublisherID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PublisherName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PublisherName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PublisherName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsActive)
+                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6">
+                <input type="submit" value="Update" class="main-button" />
+            </div>
+            <div class="col-md-6 text-right">
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "reset-button" })
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<!--This goes OUTSIDE the section of Scripts.-->
+<script>
+        //process the form
+        $('#PublisherEditForm').submit(function (e) {
+            //works like the create (see that code in the Publisher Index
+            e.preventDefault();
+            var formData = $(this).serializeArray();
+            $('#MessageContent').html("<div class='alert alert-info'>Please Wait...</div>");
+
+            $.ajax({
+                url: '@Url.Action("AjaxEdit","Publishers")',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    $('#MessageContent').html("<div class='alert alert-success'>Your Record was updated successfully!</div>");
+                    $('#PublisherEditForm')[0].reset();
+                    //Update Row Information
+                    $(function () {
+                        var row = '<tr><td>' + data.PublisherName +
+                            '</td><td>' + data.City +
+                            '</td><td>' + data.State +
+                            '</td><td>Refresh to view options</td></tr>';
+                        $('#Publisher-' + data.PublisherID).replaceWith(row);
+                    });
+                    $('#PublisherEdit').dialog('close');
+                },
+                error: function (e) {
+                    $('#MessageContent').html("<div class='alert alert-success'>There was an error. " +
+                        "Please try again or contact the site administrator.</div>")
+                }
+            });
+        });
+</script>
+

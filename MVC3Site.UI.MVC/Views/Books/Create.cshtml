@@ -1,0 +1,113 @@
+﻿@model MVC3Site.DATA.EF.Book
+
+@{
+    ViewBag.Title = "Add New Book";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="bookContainer">
+        <div id="bookHeader">
+            <h3>
+                @Html.EditorFor(model => model.BookTitle, new { htmlAttributes = new { @class = "form-control",
+                    placeholder="Book Title"} })
+                @Html.ValidationMessageFor(model => model.BookTitle, "", new { @class = "text-danger" })
+            </h3>
+            <p>
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control",
+                    placeholder="Price"} })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </p>
+            <div class="clearfix"></div>
+        </div>
+        <div id="bookLeft">
+            <p>
+                @*optional - show the No Image value*@
+                <img src="~/Content/imgstore/books/NoImage.png" alt="No Image" title="No Image" />
+            </p>
+            <p>
+                <strong>Please select a cover image: </strong><input type="file" name="BookImage" /><br />
+                <em>File upload is NOT coded. Creating/Updating will result in a NULL image for the record.</em>
+            </p>
+            <p>
+                @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label" }):
+                @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+            </p>
+            <p>
+                @Html.LabelFor(model => model.IsSiteFeature, htmlAttributes: new { @class = "control-label" }):
+                @Html.EditorFor(model => model.IsSiteFeature)
+                @Html.ValidationMessageFor(model => model.IsSiteFeature, "", new { @class = "text-danger" })
+            </p>
+            <p>
+                @Html.LabelFor(model => model.UnitsSold, htmlAttributes: new { @class = "control-label" }):
+                @Html.EditorFor(model => model.UnitsSold, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UnitsSold, "", new { @class = "text-danger" })
+            </p>
+        </div>
+        <div id="bookRight">
+            <p>
+                @Html.LabelFor(model => model.BookStatusID, "Status", htmlAttributes: new { @class = "control-label" }):
+                @Html.DropDownList("BookStatusID", null, "[-Please Choose A Status-]", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookStatusID, "", new { @class = "text-danger" })
+            </p>
+            <fieldset>
+                <legend>Publisher Information</legend>
+                <p>
+                    @Html.LabelFor(model => model.PublisherID, "Publisher", htmlAttributes: new { @class = "control-label" }): 
+                    @Html.DropDownList("PublisherID", null, "[-Please Choose A Publisher-]", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PublisherID, "", new { @class = "text-danger" })
+                </p>
+                <p>
+                    <!--Add jquery Datepicker-->
+                    @Html.LabelFor(model => model.PublishDate, htmlAttributes: new { @class = "control-label" }): 
+                    @Html.EditorFor(model => model.PublishDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PublishDate, "", new { @class = "text-danger" })
+                </p>
+            </fieldset>
+            <fieldset>
+                <legend>Genre Information</legend>
+                <p>
+                    @Html.LabelFor(model => model.GenreID, "Genre", htmlAttributes: new { @class = "control-label" }): 
+                    @Html.DropDownList("GenreID", null, "[-No Genre Selected-]", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.GenreID, "", new { @class = "text-danger" })
+
+                </p>
+                <p>
+                    @Html.LabelFor(model => model.IsGenreFeature, htmlAttributes: new { @class = "control-label" }): 
+                    @Html.EditorFor(model => model.IsGenreFeature)
+                    @Html.ValidationMessageFor(model => model.IsGenreFeature, "", new { @class = "text-danger" })
+                </p>
+            </fieldset>
+            <p>
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+            </p>
+            <p>
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </p>
+            <!--Add To Cart Pieces-->
+        </div>
+        <div class="clearfix"></div>
+        <div id="bookFooterLeft">
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "reset-button" })
+        </div>
+        <div id="bookFooterRight">
+            <input type="submit" value="Add Book" class="main-button" />
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

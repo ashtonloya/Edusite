@@ -1,0 +1,225 @@
+﻿/*Personal stylesheet for my styles and to override any template or 3rd party styles.*/
+.footer
+{
+	width: 80%;
+	margin: auto;
+}
+
+#footer
+{
+	padding-bottom: 0;
+}
+
+#main
+{
+	/*min-height: 85vh;*/
+	/*used the image on all pages so, min height not required.*/
+}
+
+.section
+{
+	padding-bottom: 0;
+}
+/*Updated for Centriq.png logo on layout*/
+navbar-brand .logo > img
+{
+	max-height: 60px;
+	margin-top: 1.5em;
+}
+
+.nav li a.selected
+{
+	/*text-decoration: underline !important;
+	text-decoration-color: #F1690E !important;*/
+	color: #F1690E !important;
+}
+
+.loginContainer, #searchPanel
+{
+	border: 3px solid #F1690E; /*Orange associated with the template*/
+	box-shadow: 1em 1em gray;
+	padding: 1em;
+}
+
+.section h2
+{
+	text-align: center;
+}
+
+input[type="submit"]
+{
+	font-weight: 700;
+}
+/*Search Panel(s)*/
+#searchPanel
+{
+	width: 85%;
+	margin: auto;
+	margin-bottom: 3em;
+}
+
+	#searchPanel input[type="text"]
+	{
+		border: 1px solid gray;
+	}
+
+.reset-button
+{
+	position: relative;
+	display: inline-block;
+	padding: 10px 30px;
+	background-color: red;
+	border: 2px solid transparent;
+	border-radius: 40px;
+	color: #FFF;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+}
+
+	.reset-button:hover, .reset-button:focus
+	{
+		background-color: #fff;
+		border: 2px solid red;
+		color: red !important;
+	}
+
+/*MVC Paging Overrides - Optional*/
+.pagination > li > a,
+.pagination > li > span
+{
+	position: relative;
+	float: left;
+	padding: 6px 12px;
+	margin-left: -1px;
+	line-height: 1.428571429;
+	text-decoration: none;
+	background-color: #ffffff;
+	border: 1px solid #dddddd;
+	color: #F1690E; /*Orange associated with the template*/
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus
+{
+	z-index: 2;
+	color: #ffffff;
+	cursor: default;
+	background-color: #F1690E; /*Orange associated with the template*/
+	border-color: #F1690E; /*Orange associated with the template*/
+}
+
+/*Custom Cart Information on Layout*/
+.cartCount
+{
+	width: 50px;
+	padding: 3px;
+	background-color: #F1690E; /*color from the underline in main nav*/
+	border-radius: 50%;
+	color: white !important;
+}
+
+/*Books Details, Create, and Edit Views*/
+#bookContainer
+{
+	border: 3px solid #F1690E; /*Orange associated with the template*/
+	box-shadow: 1em 1em gray;
+	padding: 1em;
+}
+
+#bookHeader > h3
+{
+	float: left;
+	width: 80%;
+}
+
+#bookHeader > p
+{
+	margin-left: 81%;
+	text-align: right;
+	font-size: 1.5em;
+	font-weight: 700;
+	color: blue;
+}
+
+#bookLeft
+{
+	float: left;
+	width: 25%;
+}
+
+	#bookLeft img
+	{
+		width: 95%;
+	}
+
+#bookRight
+{
+	margin-left: 26%;
+}
+
+	#bookRight fieldset
+	{
+		border: 2px solid black;
+		border-radius: 1em;
+		padding: 1em;
+		margin-bottom: 1em;
+		width: 40%;
+	}
+
+	#bookRight legend
+	{
+		border: 2px solid black;
+		border-radius: 1em;
+		padding-left: .5em;
+		font-size: 1em;
+		font-weight: 700;
+		width: 62%
+	}
+
+#bookFooterLeft
+{
+	float: left;
+	width: 49%;
+}
+
+#bookFooterRight
+{
+	padding-top: 1em;
+	margin-left: 50%;
+	text-align: right;
+}
+
+/*Create and Edit Views for Books*/
+#bookContainer select,
+#bookContainer input[type="text"],
+#bookContainer input[type="number"]
+{
+	width: 70%;
+	display: inline-block;
+}
+
+#bookContainer input[type="datetime"]
+{
+	width: 55%;
+	display: inline-block;
+}
+
+#bookContainer #BookStatusID
+{
+	width: 230px;
+}
+
+#bookContainer textarea
+{
+	resize: none;
+	min-height: 10em;
+}
+
+a:hover
+{
+	color: #F1690E; /*Orange associated with the template*/
+}

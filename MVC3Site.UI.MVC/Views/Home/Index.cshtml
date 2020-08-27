@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Welcome to MVC3 - Advanced MVC!</h2>
+<p>
+    This site includes the following examples:
+    <ul>
+        <li>Review of Building a 2 tier data driven site including Identity for security.</li>
+        <li>Built UI layer, Ran Identity Samples, Converted a template</li>
+        <li>Built DATA layer, Created the Entity Data Model, and did metadata</li>
+        <li>Added the reference to the DATA layer in the UI</li>
+        <li>
+            Added the entity Connection to the ROOT web.config, and updated the DefaultConnection to point
+            to our database
+        </li>
+        <li>Scaffold Controllers and Views</li>
+        @*<li>Create custom styles for Details, Create, Edit</li>
+            <li>Create a toggle between Index (using a table and datatables.net) and a css tile version</li>
+            <li>Implement jQueryUI datepicker for the publish date of a book</li>
+            <li>Server Side Implementation of Searching and filtering</li>
+            <li>Review of Securing Views/Controllers</li>
+            <li>Shopping Cart</li>
+            <li>Custom Identity using User Details</li>
+            <li>Update the Register Action to put a user in a default role</li>
+            <li>Implement AJAX (Asynchronous Javascript and XML) for Create,Details,Edit,Delete (embedded in an index view)</li>
+            <li>Custom Errors</li>
+            <li>Unit Testing</li>*@
+    </ul>
+</p>
+<h4>Filtering</h4>
+<p><a href="@Url.Action("Index","Books")">Datatables.net Example</a></p>
+<p><a href="@Url.Action("Index","Authors")">Search With QueryString Example (Authors)</a></p>
+<p><a href="@Url.Action("Index","Magazines")">Search With QueryString LAB (Magazines)</a></p>
+<p><a href="@Url.Action("BooksPaging","Books")">Paging Example (Books)</a></p>
+

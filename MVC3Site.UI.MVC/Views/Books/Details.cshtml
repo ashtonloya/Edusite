@@ -1,0 +1,89 @@
+﻿@model MVC3Site.DATA.EF.Book
+
+@{
+    ViewBag.Title = Model.BookTitle + " Details";
+}
+
+
+<div id="bookContainer">
+    <div id="bookHeader">
+        <h3>@Html.DisplayFor(model => model.BookTitle)</h3>
+        <p>@Html.DisplayFor(model => model.Price)</p>
+        <div class="clearfix"></div>
+    </div>
+    <div id="bookLeft">
+        <p>
+            <img src="~/Content/imgstore/books/@Model.BookImage" alt="@Model.BookTitle" title="@Model.BookTitle" />
+        </p>
+        <p>
+            <strong>@Html.DisplayNameFor(model => model.ISBN): </strong>
+            @Html.DisplayFor(model => model.ISBN)
+        </p>
+        <p>
+            <strong>@Html.DisplayNameFor(model => model.IsSiteFeature): </strong>
+            @Html.DisplayFor(model => model.IsSiteFeature)
+        </p>
+        @if (User.IsInRole("Admin"))
+        {
+            <p>
+                <strong>@Html.DisplayNameFor(model => model.UnitsSold): </strong>
+                @Html.DisplayFor(model => model.UnitsSold)
+            </p>
+        }
+    </div>
+    <div id="bookRight">
+        <p>
+            <strong>@Html.DisplayNameFor(model => model.BookStatus.BookStatusName): </strong>
+            @Html.DisplayFor(model => model.BookStatus.BookStatusName)
+        </p>
+        <fieldset>
+            <legend>Publisher Information</legend>
+            <p>
+                <strong>@Html.DisplayNameFor(model => model.Publisher.PublisherName): </strong>
+                @Html.DisplayFor(model => model.Publisher.PublisherName)
+            </p>
+            <p>
+                <strong>@Html.DisplayNameFor(model => model.PublishDate): </strong>
+                @Html.DisplayFor(model => model.PublishDate)
+            </p>
+        </fieldset>
+        <fieldset>
+            <legend>Genre Information</legend>
+            <p>
+                <strong>@Html.DisplayNameFor(model => model.Genre.GenreName): </strong>
+                @Html.DisplayFor(model => model.Genre.GenreName)
+            </p>
+            <p>
+                <strong>@Html.DisplayNameFor(model => model.IsGenreFeature): </strong>
+                @Html.DisplayFor(model => model.IsGenreFeature)
+            </p>
+        </fieldset>
+        <p>
+            <strong>@Html.DisplayNameFor(model => model.Description): </strong>
+        </p>
+        <p>
+            @Html.DisplayFor(model => model.Description)
+        </p>
+        <label>Quantity: </label>
+        @using (Html.BeginForm("AddToCart", "Books", new { bookID = Model.BookID }, FormMethod.Post, new { style = "display:inline" }))
+        {
+            @*<input type="text" name="Qty" />*@
+            @Html.TextBox("Qty", 1, new { @class = "form-control", style = "max-width:50px;display:inline;" })
+            <input type="submit" value="Add To Cart" class="main-button" name="qty" />
+        }
+    </div>
+    <div class="clearfix"></div>
+    <div id="bookFooterLeft">
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.BookID }, new { @class = "main-button" })
+        }
+    </div>
+    <div id="bookFooterRight">
+        @Html.ActionLink("Back to Books", "Index")
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+
+

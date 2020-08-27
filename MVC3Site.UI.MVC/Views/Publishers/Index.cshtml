@@ -1,0 +1,200 @@
+﻿@model IEnumerable<MVC3Site.DATA.EF.Publisher>
+
+@{
+    ViewBag.Title = "Publishers";
+}
+
+<h2>@ViewBag.Title</h2>
+<p><button id="togglePublisherCreate" class="main-button">Create Publisher</button></p>
+<div id="PublisherCreate">
+    @*Render the partial view*@
+    @Html.Partial("AjaxCreate", new MVC3Site.DATA.EF.Publisher())
+</div>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+
+
+<table id="PublishersTable" class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PublisherName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <!--Code the id of the TR to be able to identify which row to remove from the table for a delete.-->
+        <tr id="Publisher-@item.PublisherID">
+            <td>
+                @Html.DisplayFor(modelItem => item.PublisherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.PublisherID })*@
+                <a href="" class="EditLink" id="@item.PublisherID">Edit</a> |
+
+
+                @*@Html.ActionLink("Details", "Details", new { id = item.PublisherID })*@
+                <!--This is a hyperlink where the click is intercepted (see js below) return a modal popup-->
+                <a href="" class="DetailsLink" id="@item.PublisherID">Details</a> |
+
+
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.PublisherID })*@
+                <!--Delete Logic to prevent the attempt to delete records in use in another table-->
+                @if (item.Books.Count() == 0)
+                {
+                    <!--Ajax Delete-->
+                    @Ajax.ActionLink("Delete", "AjaxDelete", "Publishers", new { id = item.PublisherID },
+                                 new AjaxOptions
+                                 {
+                                     HttpMethod = "POST",
+                                     Confirm = "Are you sure you want to remove " + item.PublisherName + " from Publishers?",
+                                     OnSuccess = "deleteConfirmed"
+                                 });
+                }
+                else
+                {
+                    <span class="text-danger" style="font-weight:700;font-style:italic">In Use</span>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<!--Placeholder for the Modal Dialog (Details)-->
+<div id="PublisherDetails"></div>
+<div id="PublisherEdit"></div>
+@section scripts{
+    <script>
+        //#region AJAX Delete Confirmation
+        function deleteConfirmed(response, status, data) {
+            //remove the row from the table
+            var rowId = '#Publisher-' + response.id;
+            $('#PublishersTable').find(rowId).remove();
+
+            //display the status message (div in the Layout above the renderBody())
+            $('#MessageContent').html("<div class='alert alert-success'>" + response.message + "</div>");
+        }
+
+        //#endregion
+
+        //#region AJAX Details Dialog Box
+        $('a.DetailsLink').click(function (e) {
+            e.preventDefault();//stops the click -> nav to href
+            $('#PublisherDetails').data('pId', $(this).attr('id')).dialog({
+                //set properties of the dialog box - jqueryUI.com dialog - modal
+                modal: true,
+                open: function () {
+                    var data = $(this).data('pId');
+                    $(this).load("/Publishers/PublisherDetails/" + data)
+                },
+                width: 400,
+                height: 250,
+                title: "Publisher Details",
+                resizable:false
+            });
+        });
+
+        //#endregion
+
+        //AJAX Toggle Create Form open and closed
+        //Should default to closed -click toggles open, and another back to closed
+        $('#PublisherCreate').hide();
+        $('#togglePublisherCreate').click(function () {
+            $('#PublisherCreate').toggle();
+            //toggle the color of the button
+            if ($('#PublisherCreate').is(':visible')) {
+                //change the text on the button
+                $('#togglePublisherCreate').html('Cancel');
+                $('#togglePublisherCreate').attr('class', 'reset-button');
+                //change the button color/class
+            }
+            else
+            {
+                $('#togglePublisherCreate').html('Add Publisher');
+                $('#togglePublisherCreate').attr('class', 'main-button');
+            }
+        });
+        //-create the action and partial view, then complete the submit form code
+        //submit the form
+        $('#PublisherCreateForm').submit(function (e) {
+            //prevent default behavior
+            //serialize the form data - package the fields for transport to the controller
+            var formData = $(this).serializeArray();
+            e.preventDefault();
+            $('#MessageContent').html("<div class='alert alert-info'>Please Wait..</div>");
+            $.ajax({
+                //Action/Controller to process the create
+                url: '@Url.Action("AjaxCreate","Publishers")',
+                type: 'POST',
+                //serialized data
+                data: formData,
+                //sending it as json
+                dataType: 'json',
+                //if it works, show the success message in the div located above the render body in the layout
+                success: function (data) {
+                    $('#MessageContent').html("<div class='alert alert-success'>Your record was successfully added!</div>");
+                    //clear the form
+                    $('#PublisherCreateForm')[0].reset();
+                    //add the (temporary) row to the table (remember the browser is being manually updated so you will
+                    //see a message to refresh the view to see the links - you COULD code the links in, I leave them out
+                    //so you can see the asynchronous activity).  When the view is refreshed, the new record will load into
+                    //the table WITH links in the last column
+                    $(function () {
+                        var row = '<tr><td>' + data.PublisherName +
+                            '</td><td>' + data.City +
+                            '</td><td>' + data.State +
+                            '</td><td>Refresh to view options</td></tr>';
+                        $('#PublishersTable').append(row);//adds the new html row to the table
+
+                        //close the form and show the create button again
+                        $('PublisherCreate').toggle();//closes the form
+                        $('togglePublisherCreate').html('Add Publisher');
+                        $('togglePublisherCreate').attr('class', 'main-button');
+                    });
+                },
+                //if there is an error, show the alert message in the div
+                error: function (e) {
+                    $('#MessageContent').html("<div class='alert alert-warning'>There was an error." +
+                        " Please try again or contact the site administrator.</div>");
+                }
+            });
+        });
+
+
+        //#region *****Show the Edit Dialog Box*******
+        $('a.EditLink').click(function (e) {
+            e.preventDefault();
+            $('#PublisherEdit').data('pId', $(this).attr('id')).dialog({
+                modal: true,
+                open: function () {
+                    var data = $(this).data('pId');
+                    $(this).load("/Publishers/PublisherEdit/" + data);
+                },
+                width: 600,
+                height: 450,
+                title: 'Edit Publisher',
+                resizable:false
+            });
+        });
+
+        //#endregion
+    </script>
+
+}

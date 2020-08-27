@@ -1,0 +1,48 @@
+﻿@model IEnumerable<MVC3Site.UI.MVC.Models.ApplicationUser>
+@using MVC3Site.DATA.EF;
+@{
+    ViewBag.Title = "Users";
+    BookStorePlusEntities ctx = new BookStorePlusEntities();
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Only Display Has been updated here.</h3>
+<p>
+    @Html.ActionLink("Add User", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            User's Full Name
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        
+        UserDetail currentUser = ctx.UserDetails.Where(ud => ud.UserID == item.Id).FirstOrDefault();
+
+        <tr>
+            <td>
+                @currentUser.FirstName @currentUser.LastName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
